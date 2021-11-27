@@ -19,7 +19,8 @@ def main():
     elif extension == "":
         zip_to_file(item_name)
         item_name += ".zip"
-        # move_to_archive(ARCHIVE_FOLDER, item_name)
+        sys.argv[1] += ".zip"
+        move_to_archive(ARCHIVE_FOLDER, item_name)
 
     else:
         os.system("cls")
