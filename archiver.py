@@ -1,9 +1,7 @@
-# Check if the clicked thing is a zip file or a folder
-# If it's a zip: try to move it to the target directory
-# If it's a folder: zip it and try to move it to the target directory
+# TODO: change os.system to subprocess: https://hackernoon.com/calling-shell-commands-from-python-ossystem-vs-subprocess-mc253z4f
 
 import os
-
+import shutil
 import sys
 
 
@@ -28,21 +26,43 @@ def main():
 
 
 def zip_to_file(item_name):
-    """Zips a folder to a .zip file."""
+    """Zips a folder to a .zip file and deletes the folder.
+
+    Args:
+        item_name (str): The name of the folder to zip.
+    """
 
     command = '7z a "' + item_name + '.zip" "' + item_name + '"'
-    os.system(command)
+
+    try:
+        os.system(command)
+    except Exception as e:
+        print(f"A problem occured when zipping the folder: {e}")
+        sys.exit()
+    else:
+        try:
+            shutil.rmtree(sys.argv[1])
+        except OSError as e:
+            print(f"Error: {e.strerror}")
 
 
 def move_to_archive(ARCHIVE_FOLDER, item_name):
-    """Moves a .zip file into the archive folder."""
+    """Moves a .zip file into the archive folder.
 
-    # os.system("cls")
+    Args:
+        ARCHIVE_FOLDER (str): The folder where the file is to be archived.
+        item_name (str): The name of the zip file to archive.
+    """
+
+    os.system("cls")
     try:
-        os.rename(sys.argv[1], ARCHIVE_FOLDER + item_name)
-        print(f"File {item_name} successfully moved to the archive.")
+        shutil.move(sys.argv[1], ARCHIVE_FOLDER)
     except FileExistsError:
         print(f"File {item_name} already exists.")
+    else:
+        print(f"File {item_name} successfully moved to the archive.")
+    finally:
+        print("All done.")
 
 
 if __name__ == "__main__":
