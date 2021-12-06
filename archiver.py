@@ -1,7 +1,6 @@
-# TODO: change os.system to subprocess: https://hackernoon.com/calling-shell-commands-from-python-ossystem-vs-subprocess-mc253z4f
-
 import os
 import shutil
+import subprocess
 import sys
 
 
@@ -21,7 +20,7 @@ def main():
         move_to_archive(ARCHIVE_FOLDER, item_name)
 
     else:
-        os.system("cls")
+        subprocess.run("cls", shell=True)
         print("Incorrect file. Operation aborted.")
 
 
@@ -32,10 +31,8 @@ def zip_to_file(item_name):
         item_name (str): The name of the folder to zip.
     """
 
-    command = '7z a "' + item_name + '.zip" "' + item_name + '"'
-
     try:
-        os.system(command)
+        subprocess.run('7z a "' + item_name + '.zip" "' + item_name + '"')
     except Exception as e:
         print(f"A problem occured when zipping the folder: {e}")
         sys.exit()
@@ -54,14 +51,16 @@ def move_to_archive(ARCHIVE_FOLDER, item_name):
         item_name (str): The name of the zip file to archive.
     """
 
-    os.system("cls")
+    subprocess.run("cls", shell=True)
     if os.path.isdir(ARCHIVE_FOLDER):
         try:
             shutil.move(sys.argv[1], ARCHIVE_FOLDER)
         except FileExistsError:
             print(f'File "{item_name}" already exists.')
         else:
-            print(f'File "{item_name}" successfully moved to the archive.')
+            print(
+                f'File "{item_name}" successfully moved to the archive folder "{ARCHIVE_FOLDER}".'
+            )
         finally:
             print("All done.")
     else:
