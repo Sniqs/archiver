@@ -6,7 +6,7 @@ import sys
 
 
 def main():
-    ARCHIVE_FOLDER = "D:\\Home\\Desktop\\Archiwum zleceń\\"
+    ARCHIVE_FOLDER = "D:\\Home\\Desktop\\New archive\\"
 
     item_name = os.path.basename(sys.argv[1])
     extension = os.path.splitext(item_name)[1]
@@ -55,14 +55,17 @@ def move_to_archive(ARCHIVE_FOLDER, item_name):
     """
 
     os.system("cls")
-    try:
-        shutil.move(sys.argv[1], ARCHIVE_FOLDER)
-    except FileExistsError:
-        print(f"File {item_name} already exists.")
+    if os.path.isdir(ARCHIVE_FOLDER):
+        try:
+            shutil.move(sys.argv[1], ARCHIVE_FOLDER)
+        except FileExistsError:
+            print(f'File "{item_name}" already exists.')
+        else:
+            print(f'File "{item_name}" successfully moved to the archive.')
+        finally:
+            print("All done.")
     else:
-        print(f"File {item_name} successfully moved to the archive.")
-    finally:
-        print("All done.")
+        print(f'Target folder: "{ARCHIVE_FOLDER}" doesn\'t exist.')
 
 
 if __name__ == "__main__":
