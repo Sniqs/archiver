@@ -32,7 +32,7 @@ def zip_to_file(item_name):
     """
 
     try:
-        subprocess.run('7z a "' + item_name + '.zip" "' + item_name + '"')
+        subprocess.run('7z a "' + sys.argv[1] + '.zip" "' + sys.argv[1] + '"')
     except Exception as e:
         print(f"A problem occured when zipping the folder: {e}")
         sys.exit()
